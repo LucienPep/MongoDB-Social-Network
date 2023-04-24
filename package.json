@@ -1,7 +1,7 @@
 {
-  "name": "28-Stu_Mini-Project",
+  "name": "MongoDB-Social-Network",
   "version": "1.0.1",
-  "description": "Mongoose back-end project - Main",
+  "description": "Mongoose Social Network Project",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
