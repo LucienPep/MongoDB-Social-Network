@@ -1,7 +1,7 @@
 const { User, Thought } = require('../models');
 
 module.exports = {
-  // Get all users
+
   async getUsers(req, res) {
     try {
       const users = await User.find();
@@ -10,7 +10,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // Get a single user
+
   async getSingleUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.userId })
@@ -25,7 +25,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // create a new user
+ 
   async createUser(req, res) {
     try {
       const user = await User.create(req.body);
@@ -34,7 +34,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-  // Delete a user and associated apps
+ 
   async deleteUser(req, res) {
     try {
       const user = await User.findOneAndDelete({ _id: req.params.userId });
@@ -44,7 +44,7 @@ module.exports = {
       }
 
       await Thought.deleteMany({ _id: { $in: user.thoughts } });
-      res.json({ message: 'All User Deleted!' })
+      res.json({ message: 'User Deleted' })
     } catch (err) {
       res.status(500).json(err);
     }

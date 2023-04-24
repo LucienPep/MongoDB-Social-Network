@@ -3,16 +3,17 @@ const { Thought, User } = require('../models');
 module.exports = {
   async getThoughts(req, res) {
     try {
-      const thoughts = await Thoughts.find();
+      const thoughts = await Thought.find();
       res.json(thoughts);
     } catch (err) {
+        console.log(err)
       res.status(500).json(err);
     }
   },
 
   async getSingleThought(req, res) {
     try {
-      const thought = await Thought.findOne({ _id: req.params.applicationId });
+      const thought = await Thought.findOne({ _id: req.params.thoughtId });
 
       if (!thought) {
         return res.status(404).json({ message: 'Incorrect ID' });
@@ -28,13 +29,13 @@ module.exports = {
     try {
       const thought = await Thought.create(req.body);
       const user = await User.findOneAndUpdate(
-        { _id: req.body.userId },
+        { userName: req.body.userName },
         { $addToSet: { thoughts: thought._id } },
         { new: true }
       );
 
       if (!user) {
-        return res.status(404).json({})
+        return res.status(404).json({message: 'No User with that username'})
       }
 
       res.json('Thought Posted');
@@ -66,7 +67,8 @@ module.exports = {
   async deleteThought(req, res) {
     try {
       const thought = await Thought.findOneAndRemove(
-        { _id: req.params.thoughtId }
+        { _id: req.params.thoughtId },
+        { new: true }
       );
 
       if (!thought) {
@@ -95,7 +97,7 @@ module.exports = {
     try {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $addToSet: { tags: req.body } },
+        { $addToSet: { reactions: req.body } },
         { runValidators: true, new: true }
       );
 
@@ -103,7 +105,7 @@ module.exports = {
         return res.status(404).json({ message: 'Incorrect ID' });
       }
 
-      res.json(thought);
+      res.json({ message: 'Reaction Added' });
     } catch (err) {
       res.status(500).json(err);
     }
@@ -121,7 +123,7 @@ module.exports = {
         return res.status(404).json({ message: 'Incorrect Reaction ID' });
       }
 
-      res.json(thought);
+      res.json({ message: 'Reaction Deleted' });
     } catch (err) {
       res.status(500).json(err);
     }
