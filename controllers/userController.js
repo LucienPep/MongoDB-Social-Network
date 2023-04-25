@@ -29,8 +29,27 @@ module.exports = {
   async createUser(req, res) {
     try {
       const user = await User.create(req.body);
+      res.json({ message: 'User Created' });
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+
+  async updateUser(req, res) {
+    try {
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $set: req.body },
+        { runValidators: true, new: true }
+      );
+
+      if (!user) {
+        return res.status(404).json({ message: 'Incorrect ID' });
+      }
+
       res.json(user);
     } catch (err) {
+      console.log(err);
       res.status(500).json(err);
     }
   },
@@ -56,6 +75,12 @@ module.exports = {
       { $addToSet: { friends: req.params.friendId } },
       { runValidators: true, new: true }
     )
+    .then(() =>
+      User.findOneAndUpdate(
+        { _id: req.params.friendId },
+        { $addToSet: { friends: req.params.userId } },
+        { runValidators: true, new: true })
+      )
       .then((user) =>
         !user
           ? res.status(404).json({ message: 'No User With Matching ID' })
@@ -70,6 +95,12 @@ module.exports = {
       { $pull: { friends: req.params.friendId } },
       { runValidators: true, new: true }
     )
+    .then(() =>
+      User.findOneAndUpdate(
+        { _id: req.params.friendId },
+        { $pull: { friends: req.params.userId } },
+        { runValidators: true, new: true }
+      ))
       .then((user) =>
         !user
           ? res.status(404).json({ message: 'No User With Matching ID' })

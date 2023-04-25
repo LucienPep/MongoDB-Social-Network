@@ -72,18 +72,18 @@ module.exports = {
       );
 
       if (!thought) {
-        return res.status(404).json({ message: 'Incorrect ID' });
+        return res.status(404).json({ message: 'Incorrect Thought ID' });
       }
 
       const user = await User.findOneAndUpdate(
         { thoughts: req.params.thoughtId },
-        { $pull: { applications: req.params.thoughtId } },
+        { $pull: { thoughts: req.params.thoughtId } },
         { new: true }
       );
 
       if (!user) {
         return res.status(404).json({
-          message: 'Incorrect Thought ID',
+          message: 'User Does Not Exist',
         });
       }
 
@@ -115,7 +115,7 @@ module.exports = {
     try {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $pull: { reactions: { reactionId: req.params.reactionId } } },
+        { $pull: { reactions: { _id: req.params.reactionId } } },
         { runValidators: true, new: true }
       );
 
