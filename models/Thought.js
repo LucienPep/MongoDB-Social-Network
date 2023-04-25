@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
 const Reaction = require('./Reaction');
 
+//Though schema exported out so to be visible in user model, uses reaction schema.
 const thoughtSchema = new Schema(
   {
     thoughtText: {
@@ -28,6 +29,7 @@ const thoughtSchema = new Schema(
   }
 );
 
+//virtual to show how many reactions the thought associated has attached to it.
 thoughtSchema
   .virtual('reactionCount')
   .get(function () {

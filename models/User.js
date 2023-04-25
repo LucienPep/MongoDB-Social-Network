@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 
+//User schema uses it's self as an export for the availability of friend and also imports thoughts data that will be assigned to the user when created
 const userSchema = new Schema(
   {
     userName: {
@@ -34,6 +35,7 @@ const userSchema = new Schema(
   }
 );
 
+//virtual to show total number of friends that user has assigned to them.
 userSchema
   .virtual('friendCount')
   .get(function () {

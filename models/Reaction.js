@@ -1,5 +1,6 @@
 const { Schema, Types } = require('mongoose');
 
+//reaction schema only used for adding to thoughts and not to be created separately 
 const reactionSchema = new Schema(
   {
     reactionId: {
@@ -21,13 +22,9 @@ const reactionSchema = new Schema(
     },
   },
   {
-    toJSON: {
-      virtuals: true, getters: true
-    },
+    //as a new ID is been declared an id doesn't need to be automatically assigned
     id: false
   }
 );
-
-//const Reaction = model('reaction', reactionSchema);
 
 module.exports = reactionSchema;

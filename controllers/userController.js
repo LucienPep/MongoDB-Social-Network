@@ -1,7 +1,8 @@
 const { User, Thought } = require('../models');
 
+//exports for User methods
 module.exports = {
-
+//Get method for all users
   async getUsers(req, res) {
     try {
       const users = await User.find();
@@ -10,7 +11,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-
+// et mothod for getting one user
   async getSingleUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.userId })
@@ -25,7 +26,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
- 
+ //create new user with required field
   async createUser(req, res) {
     try {
       const user = await User.create(req.body);
@@ -34,7 +35,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-
+//update method by id to change any details about a pre existing user
   async updateUser(req, res) {
     try {
       const user = await User.findOneAndUpdate(
@@ -53,7 +54,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
- 
+ //delete user by ID
   async deleteUser(req, res) {
     try {
       const user = await User.findOneAndDelete({ _id: req.params.userId });
@@ -68,7 +69,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
-
+//add friend method to add a friend to two users, this is linked so both users add each other
   async addFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
@@ -88,7 +89,7 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-
+//delete friend method deletes friendship for both users 
   async deleteFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
